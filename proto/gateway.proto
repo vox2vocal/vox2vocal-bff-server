@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package gateway;
+
+service GatewayService {
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (UserResponse);
+}
+
+message GetCurrentUserRequest {
+  string access_token = 1;
+}
+
+message UserResponse {
+  string id = 1;
+  string email = 2;
+  string display_name = 3;
+  string role = 4;
+}
