@@ -14,7 +14,7 @@ import { MeResolver } from './me/me.resolver'
       driver: ApolloDriver,
       autoSchemaFile: true,
       sortSchema: true,
-      playground: false,
+      playground: process.env.NODE_ENV !== 'production',
       introspection: process.env.NODE_ENV !== 'production',
       path: '/graphql',
       context: (context: { req: unknown }) => ({ req: context.req }),
