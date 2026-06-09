@@ -3,8 +3,17 @@ syntax = "proto3";
 package gateway;
 
 service GatewayService {
+  rpc SignUp(SignUpRequest) returns (AuthTokenResponse);
   rpc Login(LoginRequest) returns (AuthTokenResponse);
+  rpc RefreshSession(RefreshSessionRequest) returns (AuthTokenResponse);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
   rpc GetCurrentUser(GetCurrentUserRequest) returns (UserResponse);
+}
+
+message SignUpRequest {
+  string email = 1;
+  string password = 2;
+  string display_name = 3;
 }
 
 message LoginRequest {
@@ -16,11 +25,25 @@ message GetCurrentUserRequest {
   string access_token = 1;
 }
 
+message RefreshSessionRequest {
+  string refresh_token = 1;
+}
+
+message LogoutRequest {
+  string refresh_token = 1;
+}
+
+message LogoutResponse {
+  bool ok = 1;
+  string status = 2;
+}
+
 message AuthTokenResponse {
   string access_token = 1;
   string refresh_token = 2;
   int32 expires_in = 3;
   UserResponse user = 4;
+  int32 refresh_expires_in = 5;
 }
 
 message UserResponse {
