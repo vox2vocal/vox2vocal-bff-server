@@ -17,6 +17,18 @@ export type GatewayAuthResponse = {
   user: GatewayUser
 }
 
+export type GatewayAudioUploadSession = {
+  audioAssetId: string
+  bucket: string
+  expiresAt: string
+  expiresIn: number
+  headers: Record<string, string>
+  idempotencyKey: string
+  method: string
+  sourceObjectKey: string
+  uploadUrl: string
+}
+
 type GatewayUserResponse = {
   id: string
   email: string
@@ -37,7 +49,33 @@ type GatewayAuthGrpcResponse = {
   user?: GatewayUserResponse
 }
 
+type GatewayAudioUploadSessionGrpcResponse = {
+  audioAssetId?: string
+  audio_asset_id?: string
+  bucket?: string
+  expiresAt?: string
+  expires_at?: string
+  expiresIn?: number
+  expires_in?: number
+  headers?: Record<string, string>
+  idempotencyKey?: string
+  idempotency_key?: string
+  method?: string
+  sourceObjectKey?: string
+  source_object_key?: string
+  uploadUrl?: string
+  upload_url?: string
+}
+
 type GatewayGrpcService = {
+  createAudioUploadSession(request: {
+    accessToken?: string
+    access_token?: string
+    contentType?: string
+    content_type?: string
+    originalFilename?: string
+    original_filename?: string
+  }): Observable<GatewayAudioUploadSessionGrpcResponse>
   getCurrentUser(request: {
     accessToken?: string
     access_token?: string
@@ -79,6 +117,32 @@ export class GatewayClientService implements OnModuleInit {
       email: user.email,
       displayName: user.displayName ?? user.display_name ?? '',
       role: user.role,
+    }
+  }
+
+  async createAudioUploadSession(
+    accessToken: string,
+    originalFilename: string,
+    contentType: string,
+  ): Promise<GatewayAudioUploadSession> {
+    const response = await firstValueFrom(
+      this.gatewayService.createAudioUploadSession({
+        access_token: accessToken,
+        content_type: contentType,
+        original_filename: originalFilename,
+      }),
+    )
+
+    return {
+      audioAssetId: response.audioAssetId ?? response.audio_asset_id ?? '',
+      bucket: response.bucket ?? '',
+      expiresAt: response.expiresAt ?? response.expires_at ?? '',
+      expiresIn: response.expiresIn ?? response.expires_in ?? 0,
+      headers: response.headers ?? {},
+      idempotencyKey: response.idempotencyKey ?? response.idempotency_key ?? '',
+      method: response.method ?? '',
+      sourceObjectKey: response.sourceObjectKey ?? response.source_object_key ?? '',
+      uploadUrl: response.uploadUrl ?? response.upload_url ?? '',
     }
   }
 

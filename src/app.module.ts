@@ -3,6 +3,7 @@ import { Module } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 
+import { AudioUploadResolver } from './audio-upload/audio-upload.resolver'
 import { AuthHttpService } from './auth/auth-http.service'
 import { AuthResolver } from './auth/auth.resolver'
 import { GatewayClientModule } from './gateway-client/gateway-client.module'
@@ -27,6 +28,6 @@ import { MeResolver } from './me/me.resolver'
     GatewayClientModule,
     HealthModule,
   ],
-  providers: [AuthHttpService, AuthResolver, MeResolver],
+  providers: [AuthHttpService, AuthResolver, AudioUploadResolver, MeResolver],
 })
 export class AppModule {}

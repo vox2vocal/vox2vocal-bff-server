@@ -8,6 +8,7 @@ service GatewayService {
   rpc RefreshSession(RefreshSessionRequest) returns (AuthTokenResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
   rpc GetCurrentUser(GetCurrentUserRequest) returns (UserResponse);
+  rpc CreateAudioUploadSession(CreateAudioUploadSessionRequest) returns (CreateAudioUploadSessionResponse);
 }
 
 message SignUpRequest {
@@ -36,6 +37,24 @@ message LogoutRequest {
 message LogoutResponse {
   bool ok = 1;
   string status = 2;
+}
+
+message CreateAudioUploadSessionRequest {
+  string access_token = 1;
+  string original_filename = 2;
+  string content_type = 3;
+}
+
+message CreateAudioUploadSessionResponse {
+  string audio_asset_id = 1;
+  string bucket = 2;
+  string source_object_key = 3;
+  string upload_url = 4;
+  string method = 5;
+  map<string, string> headers = 6;
+  int32 expires_in = 7;
+  string expires_at = 8;
+  string idempotency_key = 9;
 }
 
 message AuthTokenResponse {
