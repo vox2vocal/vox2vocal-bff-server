@@ -23,7 +23,7 @@ export class SignUpInput extends LoginInput {
 
 @InputType()
 export class RefreshSessionInput {
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   refreshToken?: string
@@ -40,7 +40,7 @@ export class AuthPayload {
   @Field(() => Int)
   expiresIn!: number
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   refreshToken?: string | null
 
   @Field(() => UserModel)
